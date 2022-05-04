@@ -1,47 +1,5 @@
-/* const sequelize = require('sequelize')
 const express = require('express')
-const app = express()
-
-app.use(express.json())
-
-const database = new sequelize('pwbe_aluno', 'root','',{
-    dialect: 'mysql',
-    host: 'localhost',
-    port: 3306
-})
-
-const professores = database.define('prof_info',{
-    id: {
-        type: sequelize.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
-    },
-    nome: sequelize.STRING,
-    idade: sequelize.INTEGER,  
-    num_id: sequelize.INTEGER,
-    cargo: sequelize.STRING
-});
-
-app.get('/', (req,res) =>{
-     async function getData(){
-        await database.sync()
-        let requisition = await professores.findAll()
-        for(let x = 0; x < requisition.length; x++){
-            let data = requisition[x]['dataValues']
-            res.send(data)
-        }
-    }
-    getData()
-    res.send('Successo')
-    console.log("Foi")
-})
-
-
-
-app.listen(8080, () => console.log('Rodando...')) */
-
-const express = require('express')
+const { param } = require('express/lib/request')
 const sequelize = require('sequelize')
 const app = express()
 const porta = 3000
@@ -64,6 +22,8 @@ const professores = database.define('prof_info',{
     num_id: sequelize.INTEGER,
     cargo: sequelize.STRING
 });
+
+
 
 app.use(express.json())
 
@@ -101,6 +61,25 @@ app.delete('/:id', (req, res) => {
     deleteData()
 })
 
+app.get('/:id', (req, res) => {
+    let index = req.params.id
+    async function getRegister(){
+        await database.sync()
+        let request = await professores.findAll({where:{id:index}})
+        await res.send(request)
+        await console.log(index)
+    }
+    getRegister()
+})
+
+app.put('/:id', (req, res) => {
+
+})
+
+
+
+
 
 app.listen(porta, () => console.log("Rodando.."))
 
+ 
