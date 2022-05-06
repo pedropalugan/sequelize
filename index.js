@@ -1,15 +1,16 @@
+//Variables
 const express = require('express')
-const { param } = require('express/lib/request')
 const sequelize = require('sequelize')
 const app = express()
 const porta = 3000
 
+//Conect to database
 const database = new sequelize('pwbe_aluno', 'root','',{
     dialect: 'mysql',
     host: 'localhost',
     port: 3306
 })
-
+//Creation of the table if it does not exist
 const professores = database.define('prof_info',{
     id: {
         type: sequelize.INTEGER,
@@ -23,10 +24,10 @@ const professores = database.define('prof_info',{
     cargo: sequelize.STRING
 });
 
-
-
 app.use(express.json())
 
+
+//Functions to 
 app.get('/', (req, res) => {
     async function getData(){
         await database.sync()
@@ -61,25 +62,20 @@ app.delete('/:id', (req, res) => {
     deleteData()
 })
 
-app.get('/:id', (req, res) => {
-    let index = req.params.id
-    async function getRegister(){
-        await database.sync()
-        let request = await professores.findAll({where:{id:index}})
-        await res.send(request)
-        await console.log(index)
-    }
-    getRegister()
+
+app.put('/:id', (req, res)=>{
+    let index = req.params.id 
+    let content = req.body
+    async function updateData(){
+    await database.sync()
+    const request = professores.update(
+        content,{where: {id:index}}
+    );
+    res.send("Dado atualizado")
+}
+updateData()
 })
-
-app.put('/:id', (req, res) => {
-
-})
-
-
-
 
 
 app.listen(porta, () => console.log("Rodando.."))
 
- 
