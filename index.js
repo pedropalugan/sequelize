@@ -1,11 +1,11 @@
 //Variables
 const express = require('express')
-const sequelize = require('sequelize')
+const Sequelize = require('Sequelize')
 const app = express()
 const porta = 3000
 
 //Conect to database
-const database = new sequelize('pwbe_aluno', 'root','',{
+const database = new Sequelize('pwbe_aluno', 'root','',{
     dialect: 'mysql',
     host: 'localhost',
     port: 3306
@@ -13,15 +13,15 @@ const database = new sequelize('pwbe_aluno', 'root','',{
 //Creation of the table if it does not exist
 const professores = database.define('prof_info',{
     id: {
-        type: sequelize.INTEGER,
+        type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-    nome: sequelize.STRING,
-    idade: sequelize.INTEGER,  
-    num_id: sequelize.INTEGER,
-    cargo: sequelize.STRING
+    nome: Sequelize.STRING,
+    idade: Sequelize.INTEGER,  
+    num_id: Sequelize.INTEGER,
+    cargo: Sequelize.STRING
 });
 
 app.use(express.json())
