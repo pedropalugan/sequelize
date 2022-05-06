@@ -38,15 +38,20 @@ app.get('/', (req, res) => {
     getData()
 })
 
+app.get('/:id', (req, res) => {
+    async function getDataId(){
+        let index = req.params.id
+        let requisition = await professores.findByPk(index, {raw:true})
+        res.send(requisition)
+    }
+    getDataId()
+})
+
 app.post('/', (req, res) => {
     async function postData(){
+        let dadoAdd = req.body
         await database.sync()
-        let request = await professores.create({
-            nome: req.body.nome,
-            idade: req.body.idade,
-            num_id: req.body.num_id,
-            cargo: req.body.cargo
-        })
+        let request = await professores.create(req.body)
         res.send("Dado adicionado")
     }
     postData()
