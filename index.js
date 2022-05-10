@@ -72,4 +72,3 @@ app.put('/:id', async(req, res)=>{
 
 
 app.listen(porta, () => console.log("Rodando na porta "+porta))
-
