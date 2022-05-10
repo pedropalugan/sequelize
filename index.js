@@ -4,13 +4,15 @@ const Sequelize = require('Sequelize')
 const app = express()
 const porta = 3000
 
-//Conect to database
+//Conect to database pwbe_aluno
 const database = new Sequelize('pwbe_aluno', 'root','',{
     dialect: 'mysql',
     host: 'localhost',
     port: 3306
 })
-//Creation of the table if it does not exist
+
+
+//Creation of the table if it does not exist - prof_info
 const professores = database.define('prof_info',{
     id: {
         type: Sequelize.INTEGER,
@@ -32,20 +34,19 @@ app.get('/', (req, res) => {
     async function getData(){
         await database.sync()
         let requisition = await professores.findAll()
-        let data = await requisition
-        res.send(data)
+        res.send(requisition)
     }
     getData()
 })
 
-app.get('/:id', (req, res) => {
-    async function getDataId(){
-        let index = req.params.id
-        let requisition = await professores.findByPk(index, {raw:true})
-        res.send(requisition)
-    }
-    getDataId()
+app.get('/:id', async(req, res) => {
+    await database.sync()
+    let index = req.params.id
+    let requisition = await professores.findByPk(index, {raw:true})
+    res.send(requisition)
 })
+
+
 
 app.post('/', (req, res) => {
     async function postData(){
@@ -82,5 +83,5 @@ updateData()
 })
 
 
-app.listen(porta, () => console.log("Rodando.."))
+app.listen(porta, () => console.log("Rodando na porta "+porta))
 
