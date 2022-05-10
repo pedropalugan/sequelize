@@ -31,9 +31,9 @@ app.use(express.json())
 
 //Functions to 
 app.get('/', async(req, res) => {
-        await database.sync()
-        let requisition = await professores.findAll({raw:true})
-        res.send(requisition)
+    await database.sync()
+    let requisition = await professores.findAll({raw:true})
+    res.send(requisition)
 })
 
 app.get('/:id', async(req, res) => {
@@ -46,10 +46,10 @@ app.get('/:id', async(req, res) => {
 
 
 app.post('/', async(req, res) => {
-        let dadoAdd = req.body
-        await database.sync()
-        let request = await professores.create(req.body)
-        res.send("Dado adicionado")
+    let dadoAdd = req.body
+    await database.sync()
+    let request = await professores.create(req.body)
+    res.send("Dado adicionado")
 })
 
 app.delete('/:id', async(req, res) => {
