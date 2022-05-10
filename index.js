@@ -30,13 +30,10 @@ app.use(express.json())
 
 
 //Functions to 
-app.get('/', (req, res) => {
-    async function getData(){
+app.get('/', async(req, res) => {
         await database.sync()
-        let requisition = await professores.findAll()
+        let requisition = await professores.findAll({raw:true})
         res.send(requisition)
-    }
-    getData()
 })
 
 app.get('/:id', async(req, res) => {
@@ -48,38 +45,29 @@ app.get('/:id', async(req, res) => {
 
 
 
-app.post('/', (req, res) => {
-    async function postData(){
+app.post('/', async(req, res) => {
         let dadoAdd = req.body
         await database.sync()
         let request = await professores.create(req.body)
         res.send("Dado adicionado")
-    }
-    postData()
 })
 
-app.delete('/:id', (req, res) => {
+app.delete('/:id', async(req, res) => {
     let index = req.params.id
-    async function deleteData(){
-        await database.sync()
-        let request = await professores.destroy({where:{id:index}})
-        res.send('Dado removido')
-    }
-    deleteData()
+    await database.sync()
+    let request = await professores.destroy({where:{id:index}})
+    res.send('Dado removido')
 })
 
 
-app.put('/:id', (req, res)=>{
+app.put('/:id', async(req, res)=>{
     let index = req.params.id 
     let content = req.body
-    async function updateData(){
     await database.sync()
     const request = professores.update(
         content,{where: {id:index}}
     );
     res.send("Dado atualizado")
-}
-updateData()
 })
 
 
